@@ -29,12 +29,16 @@ class SummitLDAPBackend(LDAPBackend):
     def get_or_create_user(self, username, ldap_user):
         model = self.get_user_model()
         username_field = getattr(model, 'USERNAME_FIELD', 'username')
+
         try:
             email = ldap_user.attrs['mail'][0]
-            kwargs = {username_field + '__iexact': email}
-            return model.objects.get(**kwargs), False
-        except (model.DoesNotExist, IndexError):
+        except (IndexError, KeyError):
             pass
+        else:
+            try:
+                return model.objects.get(**{username_field + '__iexact': email}), False
+            except (model.DoesNotExist, IndexError):
+                pass
 
         kwargs = {
             username_field + '__iexact': username,
