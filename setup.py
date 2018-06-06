@@ -14,7 +14,7 @@ setup_args = dict(
     license='MIT License',
     packages=['summit_auth_ldap'],
     install_requires=[
-        'django-auth-ldap>=1.2.7',
+        'django-auth-ldap==1.2.7',
     ],
     classifers=[
         'Development Status :: 4 - Beta',
